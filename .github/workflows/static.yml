@@ -24,11 +24,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Step to mirror the Freenet website
-      - name: Mirror Freenet Website
+      # Step to mirror the Freenet website and remove script tags
+      - name: Mirror Freenet Website and Remove Script Tags
         run: |
           sudo apt-get install wget
           wget --mirror --convert-links --adjust-extension --page-requisites --no-parent https://freenet.org -P freenet-website/
+          find freenet-website/ -name "*.html" -exec sed -i '/<script/,/<\/script>/d' {} \;
           mv freenet-website/freenet.org/* freenet-website/
           mv freenet-website/freenet.org/.* freenet-website/ || true
           rmdir freenet-website/freenet.org
