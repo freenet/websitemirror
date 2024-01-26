@@ -29,6 +29,9 @@ jobs:
         run: |
           sudo apt-get install wget
           wget --mirror --convert-links --adjust-extension --page-requisites --no-parent https://freenet.org -P freenet-website/
+          mv freenet-website/freenet.org/* freenet-website/
+          mv freenet-website/freenet.org/.* freenet-website/ || true
+          rmdir freenet-website/freenet.org
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
