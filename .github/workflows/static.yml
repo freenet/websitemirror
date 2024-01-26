@@ -28,7 +28,7 @@ jobs:
       - name: Mirror Freenet Website
         run: |
           sudo apt-get install wget perl
-          wget -v --mirror --convert-links --adjust-extension --page-requisites --span-hosts --domains=freenet.org,example.com --no-parent https://freenet.org -P freenet-website/
+          wget -v --mirror --convert-links --adjust-extension --page-requisites --span-hosts --domains=freenet.org,private-user-images.githubusercontent.com --no-parent https://freenet.org -P freenet-website/
           find freenet-website/ -name "*.html" -exec perl -i -0pe 's/<script.*?<\/script>//gs' {} \;
           mv freenet-website/freenet.org/* freenet-website/
           mv freenet-website/freenet.org/.* freenet-website/ || true
