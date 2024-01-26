@@ -1,8 +1,6 @@
 name: Deploy static content to Pages
 
 on:
-  schedule:
-    - cron: '37 3 * * *'  # Run every 24 hours
   push:
     branches: ["main"]
   workflow_dispatch:
@@ -26,16 +24,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Mirror Freenet Website and Process HTML
+      # Step to mirror the Freenet website and remove script tags
+      - name: Mirror Freenet Website and Remove Script Tags
         run: |
           sudo apt-get install wget perl
-          wget -v --mirror --convert-links --adjust-extension --page-requisites --span-hosts --domains=freenet.org,private-user-images.githubusercontent.com --no-parent https://freenet.org -P freenet-website/
-          find freenet-website/ -name "*.html" -exec perl -i -0pe 's/<img[^>]*?githubusercontent\.com[^>]*>//g' {} \;
+          wget --mirror --convert-links --adjust-extension --page-requisites --no-parent https://freenet.org -P freenet-website/
           find freenet-website/ -name "*.html" -exec perl -i -0pe 's/<script.*?<\/script>//gs' {} \;
           mv freenet-website/freenet.org/* freenet-website/
           mv freenet-website/freenet.org/.* freenet-website/ || true
           rmdir freenet-website/freenet.org
-
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
